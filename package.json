@@ -2,9 +2,9 @@
   "name": "mezzotre_bot",
   "version": "0.0.1",
   "description": "Un bot per dndfiesta",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "standard ./src"
   },
   "keywords": [
     "bot",
@@ -16,8 +16,9 @@
   "private": true,
   "dependencies": {
     "node-telegram-bot-api": "^0.25.0",
-    "snoowrap": "^1.11.3",
-    "typescript": "^2.1.4",
-    "typings": "^2.1.0"
+    "snoowrap": "^1.11.3"
+  },
+  "devDependencies": {
+    "standard": "^8.6.0"
   }
 }
