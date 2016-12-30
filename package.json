@@ -4,8 +4,8 @@
   "description": "Un bot per dndfiesta",
   "main": "index.js",
   "scripts": {
-    "test": "standard ./src/**/*.js",
-    "fixstyle": "standard --fix ./src/**/*.js",
+    "test": "standard ./{test,src}/**/*.js && mocha --require babel-polyfill --compilers js:babel-register ./test/**/*.js",
+    "fixstyle": "standard --fix ./{test,src}/**/*.js",
     "start": "node ./dist/index.js",
     "build": "babel src -d dist"
   },
@@ -15,7 +15,9 @@
     "reddit"
   ],
   "babel": {
-    "presets": ["env"]
+    "presets": [
+      "env"
+    ]
   },
   "author": "Davide Polonio <poloniodavide@gmail.com>",
   "license": "GPL-3.0",
@@ -26,7 +28,11 @@
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "babel-polyfill": "^6.20.0",
     "babel-preset-env": "^1.1.4",
+    "babel-register": "^6.18.0",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
     "standard": "^8.6.0"
   }
 }
