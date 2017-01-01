@@ -10,12 +10,14 @@ class Config {
 }
 
 class RedditConfig extends Config {
+
   constructor () {
     super()
     this.userAgent = process.env.USER_AGENT
     this.clientId = process.env.CLIENT_ID
     this.clientSecret = process.env.CLIENT_SECRET
-    this.refreshToken = process.env.REFRESH_TOKEN
+    this.username = process.env.RUSERNAME
+    this.password = process.env.RPASSWORD
   }
 
   getConfig () {
@@ -23,12 +25,14 @@ class RedditConfig extends Config {
       userAgent: this.userAgent,
       clientId: this.clientId,
       clientSecret: this.clientSecret,
-      refreshToken: this.refreshToken
+      username: this.username,
+      password: this.password
     }
   }
 }
 
 class TelegramConfig extends Config {
+
   constructor () {
     super()
     this.token = process.env.TOKEN
