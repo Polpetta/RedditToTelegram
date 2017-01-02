@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+   db:
+     image: redis:alpine
+     volumes:
+       - db_data:/data
+     restart: always
+   bot:
+     depends_on:
+       - db
+     build: ./
+     env_file:
+       - bot-variables.env
+
+volumes:
+  db_data:
