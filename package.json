@@ -24,6 +24,7 @@
   "private": true,
   "dependencies": {
     "node-telegram-bot-api": "^0.25.0",
+    "redis": "^2.6.3",
     "snoowrap": "^1.11.3"
   },
   "devDependencies": {
