@@ -45,5 +45,26 @@ class TelegramConfig extends Config {
   }
 }
 
+class RedisConfig extends Config {
+
+  constructor () {
+    super ()
+    this.db = process.env.DBNAME || "rtt" // Stands for "Reddit-to-Telegram"
+    this.password = process.env.DBPASSWORD
+    this.host = process.env.DBHOST || "127.0.0.1"
+    this.port = process.env.DBPORT || 6379
+  }
+
+  getConfig () {
+    return {
+      db: this.db,
+      password: this.password,
+      host: this.host,
+      port: this.port
+    }
+  }
+}
+
 export const redditConfig = new RedditConfig()
 export const telegramConfig = new TelegramConfig()
+export const redisConfig = new RedisConfig()
