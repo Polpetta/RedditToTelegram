@@ -23,10 +23,10 @@ export class RedditView extends EventEmitter {
   }
 
   startPolling () {
-    let self = this
+    const self = this
 
     setInterval(function () {
-      self.emit ('newPosts')
+      self.emit ('newPosts', self.getNewPosts())
     }, this.pollingInterval)
   }
 }
