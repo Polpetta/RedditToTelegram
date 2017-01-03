@@ -48,7 +48,7 @@ class TelegramConfig extends Config {
 class RedisConfig extends Config {
 
   constructor () {
-    super ()
+    super()
     this.db = process.env.DBNAME || undefined
     this.password = process.env.DBPASSWORD || undefined
     this.host = process.env.DBHOST || undefined
