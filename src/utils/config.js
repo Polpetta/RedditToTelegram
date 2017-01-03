@@ -49,10 +49,11 @@ class RedisConfig extends Config {
 
   constructor () {
     super ()
-    this.db = process.env.DBNAME || "rtt" // Stands for "Reddit-to-Telegram"
-    this.password = process.env.DBPASSWORD
-    this.host = process.env.DBHOST || "127.0.0.1"
-    this.port = process.env.DBPORT || 6379
+    this.db = process.env.DBNAME || undefined
+    this.password = process.env.DBPASSWORD || undefined
+    this.host = process.env.DBHOST || undefined
+    this.port = process.env.DBPORT || undefined
+    this.url = process.env.DBURL || undefined
   }
 
   getConfig () {
@@ -60,7 +61,8 @@ class RedisConfig extends Config {
       db: this.db,
       password: this.password,
       host: this.host,
-      port: this.port
+      port: this.port,
+      url: this.url
     }
   }
 }
