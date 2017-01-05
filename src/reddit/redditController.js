@@ -4,28 +4,21 @@
 
 import {RedditView} from './redditView'
 import EventEmitter from 'events'
-import RedisClient from 'redis'
-import {redisConfig} from '../utils/config'
+import {RedisDatabaseFactory} from '../database/databaseFactory'
+import {RedditDataHandler} from '../utils/redditDataHandler'
 
 export class RedditController extends EventEmitter {
 
   constructor (subredditName, pollingTime) {
     super()
+    // Reddit doesn't count UTC time in milliseconds
+    this.inizalization = Math.floor(Date.now() / 1000)
     this.subredditName = subredditName
     this.view = new RedditView(subredditName, pollingTime)
-    // Problems with Standard style with "createClient" method
-    this.redis = new RedisClient.createClient(redisConfig.getConfig()) // eslint-disable-line
-
-    this.redis.on('error', function (err) {
-      // This error happen when using the bot with docker, so for the moment
-      // I'll hide it.
-      if (err !== 'ReplyError: ERR invalid DB index') {
-        console.log('Error ' + err)
-      }
-    })
+    this.db = RedisDatabaseFactory.getDatabase()
   }
 
-  checkNews (listOfNews) {
+  _checkNews (listOfNews) {
     /*
      * TODO: integration with redis database. The idea is to save all the
      * keys of the post and check in the database if there are new keys. I
@@ -38,11 +31,55 @@ export class RedditController extends EventEmitter {
     const self = this
     listOfNews.then(function (data) {
       for (let i = 0; i < data.length; i++) {
-        console.log('id: ' + data[i].id)
-        console.log('Adding a new entry...')
-        self.redis.sadd(self.subredditName, data[i].id, function () {
-          console.log('New entry ' + data[i].id + ' added')
-        })
+        /*
+         * Check if the post is already in the database, otherwise add it.
+         */
+
+        if (self.inizalization < data[i].created_utc) {
+          new Promise(
+            function (resolve, reject) {
+              self.db.isPresent(data[i].id, function (err, obj) {
+                if (err === null) {
+                  if (obj === 1) {
+                    resolve(true)
+                  }
+                  resolve(false)
+                }
+                reject(err)
+              })
+            })
+            .then(function (res) {
+              if (res === false) {
+                new Promise(
+                  function (resolve, reject) {
+                    self.db.pushData(data[i].id,
+                      {
+                        sent: false
+                      },
+                    function (err) {
+                      if (err == null) {
+                        // I Don't need to check the object, only if there
+                        // are errors
+                        resolve()
+                      }
+                      reject(err)
+                    })
+                  })
+                  .then(function () {
+                    self.emit(
+                      'incomingPost',
+                      RedditDataHandler.purgeUnusefulFields(data[i])
+                    )
+                  })
+                  .catch(function (err) {
+                    console.log('Error: ' + err)
+                  })
+              }
+            })
+            .catch(function (err) {
+              console.log('Error: ' + err)
+            })
+        }
       }
     })
   }
@@ -50,7 +87,7 @@ export class RedditController extends EventEmitter {
   getNewPosts () {
     const self = this
     this.view.on('newPosts', function (listOfNews) {
-      self.checkNews(listOfNews)
+      self._checkNews(listOfNews)
     })
     this.view.startPolling()
   }
