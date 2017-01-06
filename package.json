@@ -1,7 +1,7 @@
 {
   "name": "mezzotre_bot",
   "version": "0.0.1",
-  "description": "A bot for dndfiesta",
+  "description": "A bot for push new post from Reddit to Telegram",
   "main": "index.js",
   "scripts": {
     "test": "standard ./{test,src}/**/*.js && mocha --require babel-polyfill --compilers js:babel-register ./test/**/*.js",
