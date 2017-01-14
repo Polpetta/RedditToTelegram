@@ -11,11 +11,12 @@ import EventEmitter from 'events'
  */
 export class RedditView extends EventEmitter {
 
-  constructor (subredditName, pollingInterval) {
+  constructor (subredditName, pollingInterval, redditModel) {
     super()
     this.reddit = new Snoowrap(redditConfig.getConfig())
     this.subredditName = subredditName
     this.pollingInterval = pollingInterval
+    this.model = redditModel // Useful for triggering action from the model
   }
 
   _getNewPosts () {
