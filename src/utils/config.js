@@ -35,7 +35,7 @@ class TelegramConfig extends Config {
 
   constructor () {
     super()
-    this.token = process.env.TOKEN
+    this.token = process.env.TTOKEN
   }
 
   getConfig () {
@@ -67,6 +67,28 @@ class RedisConfig extends Config {
   }
 }
 
+class GeneralConfig extends Config {
+
+  constructor () {
+    super ()
+    this.pollingTime = process.env.POLLING_TIME || 5000
+    this.subredditName = process.env.SUBREDDITNAME
+  }
+
+  getPollingTime () {
+    return this.pollingTime
+  }
+
+  getSubRedditName () {
+    if (this.subredditName == undefined) {
+      throw new Error ('You must define a subreddit!')
+    }
+
+    return this.subredditName
+  }
+}
+
 export const redditConfig = new RedditConfig()
 export const telegramConfig = new TelegramConfig()
 export const redisConfig = new RedisConfig()
+export const generalConfig = new GeneralConfig()
