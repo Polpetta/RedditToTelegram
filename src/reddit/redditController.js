@@ -3,6 +3,7 @@
  */
 
 import {RedditView} from './redditView'
+import {RedditModel} from './redditModel'
 import EventEmitter from 'events'
 import {RedisDatabaseFactory} from '../database/databaseFactory'
 import {RedditDataHandler} from '../utils/redditDataHandler'
@@ -14,22 +15,19 @@ export class RedditController extends EventEmitter {
     // Reddit doesn't count UTC time in milliseconds
     this.inizalization = Math.floor(Date.now() / 1000)
     this.subredditName = subredditName
-    this.view = new RedditView(subredditName, pollingTime)
+    this.model = new RedditModel()
+    this.view = new RedditView(subredditName, pollingTime, this.model)
     this.db = RedisDatabaseFactory.getDatabase()
   }
 
   _checkNews (listOfNews) {
-    /*
-     * TODO: integration with redis database. The idea is to save all the
-     * keys of the post and check in the database if there are new keys. I
-     * will probably use a set. It's faster than using a simple txt.
-     * If there are new entries I should emit an event and send the new posts
-     * to Telegram
-     *
-     */
+
+    // FIXME: this code is a mess. It needs some clean up!
 
     const self = this
     listOfNews.then(function (data) {
+
+      // FIXME: use a forEach statement to speed up the process
       for (let i = 0; i < data.length; i++) {
         /*
          * Check if the post is already in the database, otherwise add it.
@@ -85,6 +83,7 @@ export class RedditController extends EventEmitter {
   }
 
   getNewPosts () {
+
     const self = this
     this.view.on('newPosts', function (listOfNews) {
       self._checkNews(listOfNews)
