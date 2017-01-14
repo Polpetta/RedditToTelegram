@@ -4,6 +4,7 @@ node_modules/
 dist/
 doc/
 coverage/
+cert/
 
 npm-debug.log
 **/tsconfig.json
