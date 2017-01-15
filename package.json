@@ -1,6 +1,6 @@
 {
-  "name": "mezzotre_bot",
-  "version": "0.0.1",
+  "name": "reddit_to_telegram_bot",
+  "version": "0.1.1",
   "description": "A bot for push new post from Reddit to Telegram",
   "main": "index.js",
   "scripts": {
