@@ -4,6 +4,6 @@
 
 import EventEmitter from 'events'
 
-export class RedditModel extends EventEmitter{
+export class RedditModel extends EventEmitter {
 
 }

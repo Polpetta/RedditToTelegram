@@ -21,12 +21,10 @@ export class RedditController extends EventEmitter {
   }
 
   _checkNews (listOfNews) {
-
     // FIXME: this code is a mess. It needs some clean up!
 
     const self = this
     listOfNews.then(function (data) {
-
       // FIXME: use a forEach statement to speed up the process
       for (let i = 0; i < data.length; i++) {
         /*
@@ -83,7 +81,6 @@ export class RedditController extends EventEmitter {
   }
 
   getNewPosts () {
-
     const self = this
     this.view.on('newPosts', function (listOfNews) {
       self._checkNews(listOfNews)
