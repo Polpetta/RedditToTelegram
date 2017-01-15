@@ -2,11 +2,14 @@
  * Created by davide on 29/12/16.
  */
 
+import {EventHandler} from './utils/eventHandler'
+
 class Main {
 
   main () {
 
-    // Starting the program...
+    const bot = new EventHandler()
+    bot.run()
   }
 }
 
