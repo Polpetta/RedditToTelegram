@@ -33,7 +33,6 @@ export class TelegramView extends EventEmitter {
     })
   }
 
-  // TODO: i should keep a list of all the ids to broadcast the message
   sendTextMessage (id, textMessage) {
     this.telegram.sendMessage(id, textMessage)
   }
