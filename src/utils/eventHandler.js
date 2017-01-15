@@ -29,7 +29,7 @@ export class EventHandler {
   }
 
   _handleNewSubscriber (id) {
-    if (generalConfig.isSubribingAllowed() === true) {
+    if (generalConfig.isSubscribingAllowed() === true) {
       console.log('New Subscriber: ' + id)
       this.subscribers.push(id)
     } else {

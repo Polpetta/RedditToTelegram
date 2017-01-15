@@ -80,7 +80,7 @@ class GeneralConfig extends Config {
     }
   }
 
-  isSubribingAllowed () {
+  isSubscribingAllowed () {
     return this.allowSubscribers
   }
 
