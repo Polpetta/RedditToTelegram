@@ -17,7 +17,8 @@ export class RedditController extends EventEmitter {
   /**
    * The RedditController constructor.
    * @param {string} subredditName - Subreddit name where fetch the posts
-   * @param pollingTime - Interval in milliseconds between every fetch
+   * @param {int} pollingTime - Interval in milliseconds between every fetch
+   * @constructor
    */
   constructor (subredditName, pollingTime) {
     super()
