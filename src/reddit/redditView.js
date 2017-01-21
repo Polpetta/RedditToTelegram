@@ -15,7 +15,7 @@ export class RedditView extends EventEmitter {
    * Construct a RedditView object.
    * @param {string} subredditName - Subreddit name where fetch the posts
    * @param {int} pollingInterval - Interval in milliseconds between every fetch
-   * @param {RedditModel} redditModel - A redditModel
+   * @param {RedditModel} redditModel - The reddit model
    * @constructor
    */
   constructor (subredditName, pollingInterval, redditModel) {
