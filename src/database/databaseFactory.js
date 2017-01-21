@@ -4,7 +4,6 @@
 
 import {RedisDatabase} from './redis/redisDatabase'
 
-
 /**
  * Factory for different types of databases
  */

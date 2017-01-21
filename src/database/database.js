@@ -2,7 +2,6 @@
  * Created by davide on 04/01/17.
  */
 
-
 /**
  * The abstract class of a general Database.
  * In our case, a database should allow us to push some data, retrive it and
