@@ -61,7 +61,6 @@ export class EventHandler {
    * @private
    */
   _handleIncomingMessage (message) {
-
     const self = this
 
     this.subscribers.forEach(function (item) {
@@ -71,7 +70,7 @@ export class EventHandler {
   }
 
   /**
-   * It allow the Reddit controller to poll data from Reddit.
+   * It allows the Reddit controller to poll data from Reddit.
    */
   run () {
     this.redditController.getNewPosts()
