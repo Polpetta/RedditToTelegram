@@ -6,8 +6,17 @@ import TelegramBot from 'node-telegram-bot-api'
 import {telegramConfig} from '../utils/config'
 import EventEmitter from 'events'
 
+/**
+ * The view in the telegram MVC pattern. This will receive and send the
+ * messages from telegram.
+ */
 export class TelegramView extends EventEmitter {
 
+  /**
+   * The constructor in order to build the view. It create a TelegramBot
+   * object, and it subscribe to the useful events.
+   * @param {TelegramModel} telegramModel - The telegram MVC model.
+   */
   constructor (telegramModel) {
     super()
 
@@ -33,10 +42,21 @@ export class TelegramView extends EventEmitter {
     })
   }
 
+  /**
+   * Send a message to the given id
+   * @param {int} id - The address where to send the message
+   * @param {string} textMessage - The message to send
+   */
   sendTextMessage (id, textMessage) {
     this.telegram.sendMessage(id, textMessage)
   }
 
+  /**
+   * This private method will check if the id o the new partecipant of a
+   * group it's the bot itself. If this is true, a new event it's emitted.
+   * @param message
+   * @private
+   */
   _emitWhenInANewGroup (message) {
     const self = this
 

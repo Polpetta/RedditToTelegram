@@ -6,8 +6,17 @@ import {TelegramView} from './telegramView'
 import {TelegramModel} from './telegramModel'
 import EventEmitter from 'events'
 
+/**
+ * The controller for the telegram MVC. It subscribe to the view and act
+ * when a new event is emitted.
+ */
 export class TelegramController extends EventEmitter {
 
+  /**
+   * This method build the controller. It create first the model and after
+   * the view. Here the controller subscribe itself for the
+   * 'addedToANewGroup' event.
+   */
   constructor () {
     super()
 
@@ -21,6 +30,11 @@ export class TelegramController extends EventEmitter {
     })
   }
 
+  /**
+   * Send a message via telegram to the given id
+   * @param {int} id - The identifier. It has to be valid
+   * @param {Object} message - The message from reddit to send
+   */
   pushATextMessage (id, message) {
     const toSend = 'New post from ' + message.domain + '! \n' +
       'Title: ' + message.title + '\n' +
