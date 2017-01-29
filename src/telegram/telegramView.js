@@ -54,7 +54,8 @@ export class TelegramView extends EventEmitter {
   /**
    * This private method will check if the id o the new partecipant of a
    * group it's the bot itself. If this is true, a new event it's emitted.
-   * @param message
+   * @param {Object} message - An object coming from Telegram, with the new
+   * partecipant id
    * @private
    */
   _emitWhenInANewGroup (message) {
