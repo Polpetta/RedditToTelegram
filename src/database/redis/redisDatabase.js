@@ -11,8 +11,15 @@ import bluebird from 'bluebird'
 bluebird.promisifyAll(RedisClient.RedisClient.prototype);
 bluebird.promisifyAll(RedisClient.Multi.prototype);
 
+/**
+ * An instance of the Database designed to work with the Redis database.
+ */
 export class RedisDatabase extends Database {
 
+  /**
+   * It construct the RedisDatabase object, creating first a connection to
+   * Redis.
+   */
   constructor() {
 
     super()
@@ -30,16 +37,39 @@ export class RedisDatabase extends Database {
     this.dataStructure = new HashRedisDataStructureStrategy(this.db)
   }
 
+  /**
+   * Save given data with a specific id on Redis.
+   * @param {string} id - The data identifier
+   * @param {Object} data - The data the user want to save
+   * @param {Function} callback - Function to callback after the operation
+   * @returns {*}
+   */
   pushData (id, data, callback) {
 
     return this.dataStructure.save(id, data, callback)
   }
 
+  /**
+   * Return the data saved with a specific id on Redis
+   * @param {string} id - The data identifier
+   * @param {Function} callback - Function to callback after the operation.
+   * It will pass the data in a JSON Object if the operation it's successful.
+   * @returns {*}
+   */
   getData (id, callback) {
 
     return this.dataStructure.retrieve(id, callback)
   }
 
+  /**
+   * Checks if the id it's already present in the database. It'll call a
+   * callback containing a boolean value: true if there is some data with
+   * the given id, false otherwise.
+   * @param {string} id - The data identifier
+   * @param {Function} callback - Function to callback after the operation.
+   * It will pass a boolean value.
+   * @returns {*}
+   */
   isPresent (id, callback) {
 
     return this.dataStructure.search(id, callback)

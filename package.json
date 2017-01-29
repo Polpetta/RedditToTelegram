@@ -6,7 +6,8 @@
   "scripts": {
     "test": "standard ./{test,src}/**/*.js && mocha --require babel-polyfill --compilers js:babel-register ./test/**/*.js",
     "fixstyle": "standard --fix ./{test,src}/**/*.js",
-    "gendoc": "jsdoc ./src/**/*.js -d ./doc/",
+    "gendoc_html": "jsdoc ./src/**/*.js -d ./doc/ -p",
+    "gendoc_md": "jsdoc2md -f ./src/**/*.js --private > ./doc.md",
     "start": "node ./dist/index.js",
     "build": "babel src -d dist"
   },
@@ -36,6 +37,7 @@
     "babel-register": "^6.18.0",
     "chai": "^3.5.0",
     "jsdoc": "^3.4.3",
+    "jsdoc-to-markdown": "^2.0.1",
     "mocha": "^3.2.0",
     "standard": "^8.6.0"
   }
