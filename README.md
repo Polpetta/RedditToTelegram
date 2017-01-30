@@ -71,9 +71,7 @@ docker-compose up
 If you're not using Docker, you need to do some additional steps:
 <br>
 <code>
-npm prune --production && \ # only for a production environment <br>
-
-npm start
+npm install && npm start
 </code>
 <br>
 Enjoy! :)
