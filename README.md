@@ -72,6 +72,7 @@ If you're not using Docker, you need to do some additional steps:
 <br>
 <code>
 npm prune --production && \ # only for a production environment <br>
+
 npm start
 </code>
 <br>
