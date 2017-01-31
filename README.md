@@ -21,9 +21,11 @@
 <h3>Installation</h3>
 
 It's very simple to deploy your own RTT bot. First of all you need to have a 
-Reddit account and a Telegram bot (you can create it writing to the 
-BotFather). Docker and docker-compose are strong prerequisites, but they're not 
-mandatory.
+<a href="https://www.reddit.com/">Reddit</a> account and a Telegram bot (you 
+can create it writing to the BotFather).
+<a href="https://www.docker.com/">Docker</a> and docker-compose are strong 
+prerequisites, but they're not mandatory. If you're not going to use Docker, 
+you'll need also a working <a href="https://redis.io/">Redis</a> installation.
 Now clone 
 the repository:
 <br>
