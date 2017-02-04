@@ -5,7 +5,7 @@
 import {RedditView} from './redditView'
 import {RedditModel} from './redditModel'
 import EventEmitter from 'events'
-import {RedisDatabaseFactory} from '../database/databaseFactory'
+import {InMemoryDatabaseFactory} from '../database/databaseFactory'
 import {RedditDataHandler} from '../utils/redditDataHandler'
 
 /**
@@ -27,7 +27,7 @@ export class RedditController extends EventEmitter {
     this.subredditName = subredditName
     this.model = new RedditModel()
     this.view = new RedditView(subredditName, pollingTime, this.model)
-    this.db = RedisDatabaseFactory.getDatabase()
+    this.db = InMemoryDatabaseFactory.getDatabase()
   }
 
   /**
