@@ -41,24 +41,45 @@ export class RedisDatabase extends Database {
    * Save given data with a specific id on Redis.
    * @param {string} id - The data identifier
    * @param {Object} data - The data the user want to save
-   * @param {Function} callback - Function to callback after the operation
-   * @returns {*}
+   * @returns {Promise}
    */
-  pushData (id, data, callback) {
+  pushData (id, data) {
 
-    return this.dataStructure.save(id, data, callback)
+    const self = this
+
+    return new Promise(
+      function (resolve, reject) {
+        self.dataStructure.save(id, data, function (err) {
+            if (err == null) {
+              // I Don't need to check the object, only if there
+              // are errors
+              resolve()
+            }
+            reject(err)
+          })
+      })
   }
 
   /**
    * Return the data saved with a specific id on Redis
    * @param {string} id - The data identifier
-   * @param {Function} callback - Function to callback after the operation.
-   * It will pass the data in a JSON Object if the operation it's successful.
-   * @returns {*}
+   * @returns {Promise}
    */
-  getData (id, callback) {
+  getData (id) {
 
-    return this.dataStructure.retrieve(id, callback)
+    const self = this
+
+    return new Promise(
+      function (resolve, reject) {
+        self.dataStructure.retrieve(id, function (err, data) {
+          if (err == null) {
+            resolve(data)
+          } else {
+            reject(err)
+          }
+        })
+      }
+    )
   }
 
   /**
@@ -66,12 +87,23 @@ export class RedisDatabase extends Database {
    * callback containing a boolean value: true if there is some data with
    * the given id, false otherwise.
    * @param {string} id - The data identifier
-   * @param {Function} callback - Function to callback after the operation.
-   * It will pass a boolean value.
-   * @returns {*}
+   * @returns {Promise}
    */
-  isPresent (id, callback) {
+  isPresent (id) {
 
-    return this.dataStructure.search(id, callback)
+    const self = this
+
+    return new Promise(
+      function (resolve, reject) {
+        self.dataStructure.search(id, function (err, obj) {
+          if (err === null) {
+            if (obj === 1) {
+              resolve(true)
+            }
+            resolve(false)
+          }
+          reject(err)
+        })
+      })
   }
 }

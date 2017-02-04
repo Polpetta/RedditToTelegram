@@ -45,9 +45,8 @@ export class RedditController extends EventEmitter {
    * @private
    */
   _checkNews (listOfNews) {
-    // FIXME: this code is a mess. It needs some clean up!
-
     const self = this
+
     listOfNews.then(function (data) {
       // FIXME: use a forEach statement to speed up the process
       for (let i = 0; i < data.length; i++) {
@@ -56,35 +55,10 @@ export class RedditController extends EventEmitter {
          */
 
         if (self.inizalization < data[i].created_utc) {
-          new Promise(
-            function (resolve, reject) {
-              self.db.isPresent(data[i].id, function (err, obj) {
-                if (err === null) {
-                  if (obj === 1) {
-                    resolve(true)
-                  }
-                  resolve(false)
-                }
-                reject(err)
-              })
-            })
+          self.db.isPresent(data[i].id)
             .then(function (res) {
               if (res === false) {
-                new Promise(
-                  function (resolve, reject) {
-                    self.db.pushData(data[i].id,
-                      {
-                        sent: false
-                      },
-                    function (err) {
-                      if (err == null) {
-                        // I Don't need to check the object, only if there
-                        // are errors
-                        resolve()
-                      }
-                      reject(err)
-                    })
-                  })
+                self.db.pushData(data[i].id, { sent: false })
                   .then(function () {
                     self.emit(
                       'incomingPost',
@@ -92,16 +66,27 @@ export class RedditController extends EventEmitter {
                     )
                   })
                   .catch(function (err) {
-                    console.log('Error: ' + err)
+                    self._printError('Error in ' + data[i].id + ': ' + err)
                   })
               }
             })
             .catch(function (err) {
-              console.log('Error: ' + err)
+              self._printError('Error in ' + data[i].id + ': ' + err)
             })
         }
       }
     })
+  }
+
+  /**
+   * Print the error message. This method exists to follow the DRY in
+   * _checkNews. For the moment it's a sort of workaround, and in the future
+   * this abomination will be fixed.
+   * @param {string} message - The error message to print
+   * @private
+   */
+  _printError (message) {
+    console.log(message)
   }
 
   /**
