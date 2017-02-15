@@ -76,7 +76,11 @@ export class InMemoryDatabase extends Database {
           },
           function (err, doc) {
             if (err == null) {
-              resolve (doc.content)
+              if (doc != null) {
+                resolve (doc.content)
+              } else {
+                resolve (null)
+              }
             } else {
               reject (err)
             }
