@@ -14,7 +14,6 @@ class AbstractRedisDataStructureStrategy {
    * @param {RedisClient} redisPointer - The library to talk with Redis
    */
   constructor (redisPointer) {
-
     this.db = redisPointer
   }
 
@@ -41,15 +40,7 @@ class AbstractRedisDataStructureStrategy {
 /**
  * This method saves data in Redis using an hash.
  */
-export class HashRedisDataStructureStrategy extends AbstractRedisDataStructureStrategy{
-
-  /**
-   * The class constructor
-   * @param {RedisClient} redisDatabase - The library to talk with Redis
-   */
-  constructor (redisDatabase) {
-    super(redisDatabase)
-  }
+export class HashRedisDataStructureStrategy extends AbstractRedisDataStructureStrategy {
 
   /**
    * It will compute the sha256 of the input string given
@@ -70,8 +61,7 @@ export class HashRedisDataStructureStrategy extends AbstractRedisDataStructureSt
    * @returns {*}
    */
   save (id, data, callback) {
-
-    console.log ('Adding id: ' + id)
+    console.log('Adding id: ' + id)
     return this.db.hset(this._getSha(id), 'sent', data.sent, callback)
   }
 
@@ -92,7 +82,6 @@ export class HashRedisDataStructureStrategy extends AbstractRedisDataStructureSt
    * @returns {*}
    */
   search (id, callback) {
-
-    return this.db.hexists (this._getSha(id), 'sent', callback)
+    return this.db.hexists(this._getSha(id), 'sent', callback)
   }
 }
