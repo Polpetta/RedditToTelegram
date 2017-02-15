@@ -8,8 +8,8 @@ import RedisClient from 'redis'
 import {redisConfig} from '../../utils/config'
 import bluebird from 'bluebird'
 
-bluebird.promisifyAll(RedisClient.RedisClient.prototype);
-bluebird.promisifyAll(RedisClient.Multi.prototype);
+bluebird.promisifyAll(RedisClient.RedisClient.prototype)
+bluebird.promisifyAll(RedisClient.Multi.prototype)
 
 /**
  * An instance of the Database designed to work with the Redis database.
@@ -20,8 +20,7 @@ export class RedisDatabase extends Database {
    * It construct the RedisDatabase object, creating first a connection to
    * Redis.
    */
-  constructor() {
-
+  constructor () {
     super()
 
     this.db = new RedisClient.createClient(redisConfig.getConfig()) // eslint-disable-line
@@ -29,7 +28,7 @@ export class RedisDatabase extends Database {
     this.db.on('error', function (err) {
       // This error happen when using the bot with docker, so for the moment
       // I'll hide it.
-      if (err != 'ReplyError: ERR invalid DB index') {
+      if (err !== 'ReplyError: ERR invalid DB index') {
         console.log('Error ' + err)
       }
     })
@@ -44,19 +43,18 @@ export class RedisDatabase extends Database {
    * @returns {Promise}
    */
   pushData (id, data) {
-
     const self = this
 
     return new Promise(
       function (resolve, reject) {
         self.dataStructure.save(id, data, function (err) {
-            if (err == null) {
+          if (err == null) {
               // I Don't need to check the object, only if there
               // are errors
-              resolve()
-            }
-            reject(err)
-          })
+            resolve()
+          }
+          reject(err)
+        })
       })
   }
 
@@ -66,7 +64,6 @@ export class RedisDatabase extends Database {
    * @returns {Promise}
    */
   getData (id) {
-
     const self = this
 
     return new Promise(
@@ -90,7 +87,6 @@ export class RedisDatabase extends Database {
    * @returns {Promise}
    */
   isPresent (id) {
-
     const self = this
 
     return new Promise(
