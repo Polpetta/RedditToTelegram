@@ -29,9 +29,8 @@ export class RedditView extends EventEmitter {
   /**
    * It get new posts from reddit of a given subreddit.
    * @returns {Promise} - The promise with new posts data
-   * @private
    */
-  _getNewPosts () {
+  getNewPosts () {
     return this.reddit.getNew(this.subredditName)
   }
 
@@ -44,7 +43,7 @@ export class RedditView extends EventEmitter {
     const self = this
 
     setInterval(function () {
-      self.emit('newPosts', self._getNewPosts())
+      self.emit('newPosts', self.getNewPosts())
     }, this.pollingInterval)
   }
 }

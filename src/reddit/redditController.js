@@ -22,12 +22,20 @@ export class RedditController extends EventEmitter {
    */
   constructor (subredditName, pollingTime) {
     super()
-    // Reddit doesn't count UTC time in milliseconds
-    this.inizalization = Math.floor(Date.now() / 1000)
-    this.subredditName = subredditName
     this.model = new RedditModel()
     this.view = new RedditView(subredditName, pollingTime, this.model)
     this.db = InMemoryDatabaseFactory.getDatabase()
+
+    // Populating for the first time the database
+    const self = this
+    this.view.getNewPosts().then(function (firstPopulatingData) {
+      firstPopulatingData.forEach(function (item) {
+        self.db.pushData(item.id, { sent: false })
+          .catch(function (err) {
+            console.log('Error adding item ' + item.id + '! ' + err)
+          })
+      })
+    })
   }
 
   /**
@@ -61,26 +69,24 @@ export class RedditController extends EventEmitter {
   _processSinglePost (post) {
     const self = this
 
-    if (self.inizalization < post.created_utc) {
-      self.db.isPresent(post.id)
-        .then(function (res) {
-          if (res === false) {
-            self.db.pushData(post.id, { sent: false })
-              .then(function () {
-                self.emit(
-                  'incomingPost',
-                  RedditDataHandler.purgeUnusefulFields(post)
-                )
-              })
-              .catch(function (err) {
-                self._printError('Error in ' + post.id + ': ' + err)
-              })
-          }
-        })
-        .catch(function (err) {
-          self._printError('Error in ' + post.id + ': ' + err)
-        })
-    }
+    self.db.isPresent(post.id)
+      .then(function (res) {
+        if (res === false) {
+          self.db.pushData(post.id, {sent: false})
+            .then(function () {
+              self.emit(
+                'incomingPost',
+                RedditDataHandler.purgeUnusefulFields(post)
+              )
+            })
+            .catch(function (err) {
+              self._printError('Error in ' + post.id + ': ' + err)
+            })
+        }
+      })
+      .catch(function (err) {
+        self._printError('Error in ' + post.id + ': ' + err)
+      })
   }
 
   /**
