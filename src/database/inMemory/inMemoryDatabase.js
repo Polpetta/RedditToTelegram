@@ -23,9 +23,9 @@ export class InMemoryDatabase extends Database {
    * Class constructor. It call the super class constructor and initialize
    * netdb, the in memory database.
    */
-  constructor() {
-    super ()
-    this._netbd = new netdb ()
+  constructor () {
+    super()
+    this._netbd = new netdb() // eslint-disable-line
   }
 
   /**
@@ -34,24 +34,21 @@ export class InMemoryDatabase extends Database {
    * @param {Object} data - The data to save
    * @returns {Promise}
    */
-  pushData(id, data) {
-
+  pushData (id, data) {
     const self = this
 
-    return new Promise (
+    return new Promise(
       function (resolve, reject) {
-
         const toInsert = {
-          postId : id,
+          postId: id,
           content: data
         }
 
-        self._netbd.insert(toInsert, function (err, newDoc){
-
+        self._netbd.insert(toInsert, function (err, newDoc) {
           if (err == null) {
-            resolve ()
+            resolve()
           } else {
-            reject (err)
+            reject(err)
           }
         })
       }
@@ -63,26 +60,24 @@ export class InMemoryDatabase extends Database {
    * @param {string} id - The unique identifier for the data
    * @returns {Promise}
    */
-  getData(id) {
-
+  getData (id) {
     const self = this
 
-    return new Promise (
+    return new Promise(
       function (resolve, reject) {
-
-        self._netbd.findOne (
+        self._netbd.findOne(
           {
-            postId : id
+            postId: id
           },
           function (err, doc) {
             if (err == null) {
               if (doc != null) {
-                resolve (doc.content)
+                resolve(doc.content)
               } else {
-                resolve (null)
+                resolve(null)
               }
             } else {
-              reject (err)
+              reject(err)
             }
           }
         )
@@ -95,13 +90,11 @@ export class InMemoryDatabase extends Database {
    * @param {string} id - The unique identifier for the data
    * @returns {Promise}
    */
-  isPresent(id) {
-
+  isPresent (id) {
     const self = this
 
-    return new Promise (
+    return new Promise(
       function (resolve, reject) {
-
         self.getData(id)
           .then(function (data) {
             if (data == null) {
@@ -110,7 +103,7 @@ export class InMemoryDatabase extends Database {
               resolve(true)
             }
           }).catch(function (err) {
-            reject (err)
+            reject(err)
           })
       }
     )
