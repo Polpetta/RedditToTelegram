@@ -13,7 +13,7 @@ describe('SearchableFIFO', function () {
   }
   const fifo = new SearchableFIFO(25)
 
-  it('should push and found data', function () {
+  it('should push and find data', function () {
     fifo.pushData(id, data)
 
     // Checking
