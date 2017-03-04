@@ -7,10 +7,9 @@ import chai from 'chai'
 
 /* eslint-env mocha */
 describe('SearchableFIFO', function () {
-
   const id = 42
   const data = {
-    testField: "hello"
+    testField: 'hello'
   }
   const fifo = new SearchableFIFO(25)
 
@@ -22,12 +21,11 @@ describe('SearchableFIFO', function () {
   })
 
   it('should remove old data', function () {
-
     const randomData = {
-      testField: "something"
+      testField: 'something'
     }
 
-    for (i = 0; i < 25; i++) {
+    for (let i = 0; i < 25; i++) {
       fifo.pushData(i, randomData)
     }
 
