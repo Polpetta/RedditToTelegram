@@ -37,8 +37,6 @@ export class SearchableFIFO {
   isPresent (id) {
     const data = this.getData(id)
 
-    console.log(data)
-
     if (data !== null) {
       return true
     }
