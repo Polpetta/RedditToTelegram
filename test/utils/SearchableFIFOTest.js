@@ -2,7 +2,7 @@
  * Created by davide on 04/03/17.
  */
 
-import {SearchableFIFO} from '../../../src/utils/dataStructure/SearchableFIFO'
+import {SearchableFIFO} from '../../src/utils/dataStructure/SearchableFIFO'
 import chai from 'chai'
 
 /* eslint-env mocha */
@@ -25,7 +25,7 @@ describe('SearchableFIFO', function () {
       testField: 'something'
     }
 
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 26; i++) {
       fifo.pushData(i, randomData)
     }
 
