@@ -9,7 +9,7 @@ export class SearchableFIFO {
     this._fifo = []
   }
 
-  pushData (id, data) {
+  push (id, data) {
     if (this._fifo.length > this._maxNumberOfItems) {
       this._fifo.shift()
     }
@@ -22,7 +22,7 @@ export class SearchableFIFO {
     this._fifo.push(toPush)
   }
 
-  getData (id) {
+  get (id) {
     let data = this._fifo.find((element) => {
       return id === element.id
     })
@@ -32,15 +32,5 @@ export class SearchableFIFO {
     } else {
       return null
     }
-  }
-
-  isPresent (id) {
-    const data = this.getData(id)
-
-    if (data !== null) {
-      return true
-    }
-
-    return false
   }
 }

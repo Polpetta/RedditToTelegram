@@ -14,10 +14,10 @@ describe('SearchableFIFO', function () {
   const fifo = new SearchableFIFO(25)
 
   it('should push and find data', function () {
-    fifo.pushData(id, data)
+    fifo.push(id, data)
 
     // Checking
-    return chai.expect(fifo.isPresent(id)).to.equal(true)
+    return chai.expect(fifo.get(id)).to.equal(data)
   })
 
   it('should remove old data', function () {
@@ -26,10 +26,10 @@ describe('SearchableFIFO', function () {
     }
 
     for (let i = 0; i < 26; i++) {
-      fifo.pushData(i, randomData)
+      fifo.push(i, randomData)
     }
 
     // Checking
-    return chai.expect(fifo.isPresent(id)).to.equal(false)
+    return chai.expect(fifo.get(id)).to.equal(null)
   })
 })
