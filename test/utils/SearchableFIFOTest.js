@@ -2,7 +2,7 @@
  * Created by davide on 04/03/17.
  */
 
-import {SearchableFIFO} from '../../src/utils/dataStructure/SearchableFIFO'
+import {SearchableFIFO} from '../../src/utils/dataStructure/searchableFIFO'
 import chai from 'chai'
 
 /* eslint-env mocha */
