@@ -10,16 +10,14 @@ export class SearchableFIFO {
   }
 
   push (id, data) {
-    if (this._fifo.length > this._maxNumberOfItems) {
-      this._fifo.shift()
-    }
 
     const toPush = {
       id: id,
       content: data
     }
 
-    this._fifo.push(toPush)
+    this._fifo.unshift(toPush)
+    this._fifo.length = this._maxNumberOfItems
   }
 
   get (id) {
