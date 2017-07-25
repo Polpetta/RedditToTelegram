@@ -10,7 +10,6 @@ export class SearchableFIFO {
   }
 
   push (id, data) {
-
     const toPush = {
       id: id,
       content: data
