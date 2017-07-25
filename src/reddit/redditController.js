@@ -5,7 +5,7 @@
 import {RedditView} from './redditView'
 import {RedditModel} from './redditModel'
 import EventEmitter from 'events'
-import {InMemoryDatabaseFactory} from '../database/databaseFactory'
+import {SearchableFIFO} from '../utils/dataStructure/searchableFIFO'
 import {RedditDataHandler} from '../utils/redditDataHandler'
 
 /**
@@ -24,17 +24,16 @@ export class RedditController extends EventEmitter {
     super()
     this.model = new RedditModel()
     this.view = new RedditView(subredditName, pollingTime, this.model)
-    this.db = InMemoryDatabaseFactory.getDatabase()
+    this.db = new SearchableFIFO(25)
 
     // Populating for the first time the database
     const self = this
     this.view.getNewPosts().then(function (firstPopulatingData) {
-      firstPopulatingData.forEach(function (item) {
-        self.db.pushData(item.id, { sent: false })
-          .catch(function (err) {
-            console.log('Error adding item ' + item.id + '! ' + err)
-          })
-      })
+      for (let i = 0; i < firstPopulatingData.length; i++) {
+        console.log('INITIALIZATION: pushing ' + JSON.stringify(firstPopulatingData[i]))
+
+        self.db.push(firstPopulatingData[i].id, {sent: false})
+      }
     })
   }
 
@@ -50,7 +49,9 @@ export class RedditController extends EventEmitter {
     const self = this
 
     listOfNews.then(function (data) {
-      data.forEach(self._processSinglePost.bind(self))
+      for (let i = 0; i < data.length; i++) {
+        self._processSinglePost(data[i])
+      }
     })
   }
 
@@ -67,26 +68,20 @@ export class RedditController extends EventEmitter {
    * @private
    */
   _processSinglePost (post) {
-    const self = this
+    console.log('PROCESSING post ' + JSON.stringify(post))
 
-    self.db.isPresent(post.id)
-      .then(function (res) {
-        if (res === false) {
-          self.db.pushData(post.id, {sent: false})
-            .then(function () {
-              self.emit(
-                'incomingPost',
-                RedditDataHandler.purgeUnusefulFields(post)
-              )
-            })
-            .catch(function (err) {
-              self._printError('Error in ' + post.id + ': ' + err)
-            })
-        }
-      })
-      .catch(function (err) {
-        self._printError('Error in ' + post.id + ': ' + err)
-      })
+    let dbFetch = this.db.get(post.id)
+
+    if (!dbFetch) {
+      // Empty entry
+      console.log('dbFetch is: ' + dbFetch + ', pushing it in the cache')
+      this.db.push(post.id, {sent: false})
+
+      this.emit(
+        'incomingPost',
+        RedditDataHandler.purgeUnusefulFields(post)
+      )
+    }
   }
 
   /**
