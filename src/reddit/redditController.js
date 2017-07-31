@@ -30,8 +30,9 @@ export class RedditController extends EventEmitter {
   }
 
   /**
-   * This method will subscribe to the view, in particular to the 'newPosts'
-   * event and it'll start the polling from Reddit.
+   * This method will fetch for the first time a list of posts and it will
+   * take the newest. After that it will call `_internalPolling` that will
+   * indefinitely poll reddit searching for new posts.
    */
   getNewPosts () {
     if (!this.polling) {
@@ -40,13 +41,20 @@ export class RedditController extends EventEmitter {
 
       // First population
       this.view.getNewPosts().then(function (newPosts) {
-        /* let newOldest = self._getOldestPost(newPosts) */
         let newOldest = newPosts[0]
         self._internalPolling(newOldest)
       })
     }
   }
 
+  /**
+   * The main goal of this method is to filter posts that are newer than
+   * the `oldest` param. If they are, a `incomingPost` event is emitted,
+   * alerting the telegram part that there is a new post to push to the user.
+   * @param {Object} oldest - The last reddit post fetched from the previous
+   * iteration
+   * @private
+   */
   _internalPolling (oldest) {
     let self = this
     this.view.getNewPosts().then(function (newPosts) {
