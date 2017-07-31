@@ -23,11 +23,11 @@ class RedditConfig extends Config {
    */
   constructor () {
     super()
-    this.userAgent = process.env.USER_AGENT
-    this.clientId = process.env.CLIENT_ID
-    this.clientSecret = process.env.CLIENT_SECRET
-    this.username = process.env.RUSERNAME
-    this.password = process.env.RPASSWORD
+    this._userAgent = process.env.USER_AGENT
+    this._clientId = process.env.CLIENT_ID
+    this._clientSecret = process.env.CLIENT_SECRET
+    this._username = process.env.RUSERNAME
+    this._password = process.env.RPASSWORD
   }
 
   /**
@@ -36,11 +36,11 @@ class RedditConfig extends Config {
    */
   getConfig () {
     return {
-      userAgent: this.userAgent,
-      clientId: this.clientId,
-      clientSecret: this.clientSecret,
-      username: this.username,
-      password: this.password
+      userAgent: this._userAgent,
+      clientId: this._clientId,
+      clientSecret: this._clientSecret,
+      username: this._username,
+      password: this._password
     }
   }
 }
@@ -80,11 +80,11 @@ class RedisConfig extends Config {
    */
   constructor () {
     super()
-    this.db = process.env.DBNAME || undefined
-    this.password = process.env.DBPASSWORD || undefined
-    this.host = process.env.DBHOST || undefined
-    this.port = process.env.DBPORT || undefined
-    this.url = process.env.DBURL || undefined
+    this._db = process.env.DBNAME || undefined
+    this._password = process.env.DBPASSWORD || undefined
+    this._host = process.env.DBHOST || undefined
+    this._port = process.env.DBPORT || undefined
+    this._url = process.env.DBURL || undefined
   }
 
   /**
@@ -93,11 +93,11 @@ class RedisConfig extends Config {
    */
   getConfig () {
     return {
-      db: this.db,
-      password: this.password,
-      host: this.host,
-      port: this.port,
-      url: this.url
+      db: this._db,
+      password: this._password,
+      host: this._host,
+      port: this._port,
+      url: this._url
     }
   }
 }
@@ -113,12 +113,12 @@ class GeneralConfig extends Config {
    */
   constructor () {
     super()
-    this.pollingTime = process.env.POLLING_TIME || 5000
-    this.subredditName = process.env.SUBREDDITNAME
+    this._pollingTime = process.env.POLLING_TIME || 5000
+    this._subredditName = process.env.SUBREDDITNAME
 
-    this.allowSubscribers = false
+    this._allowSubscribers = false
     if (process.env.ALLOW_NEW_SUBSCRIBERS === '1') {
-      this.allowSubscribers = true
+      this._allowSubscribers = true
     }
   }
 
@@ -127,7 +127,7 @@ class GeneralConfig extends Config {
    * @returns {boolean}
    */
   isSubscribingAllowed () {
-    return this.allowSubscribers
+    return this._allowSubscribers
   }
 
   /**
@@ -135,7 +135,7 @@ class GeneralConfig extends Config {
    * @returns {*|number}
    */
   getPollingTime () {
-    return this.pollingTime
+    return this._pollingTime
   }
 
   /**
@@ -143,11 +143,11 @@ class GeneralConfig extends Config {
    * @returns {*}
    */
   getSubRedditName () {
-    if (this.subredditName == null) {
+    if (this._subredditName == null) {
       throw new Error('You must define a subreddit!')
     }
 
-    return this.subredditName
+    return this._subredditName
   }
 }
 

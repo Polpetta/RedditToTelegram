@@ -23,9 +23,9 @@ export class RedisDatabase extends Database {
   constructor () {
     super()
 
-    this.db = new RedisClient.createClient(redisConfig.getConfig()) // eslint-disable-line
+    this._db = new RedisClient.createClient(redisConfig.getConfig()) // eslint-disable-line
 
-    this.db.on('error', function (err) {
+    this._db.on('error', function (err) {
       // This error happen when using the bot with docker, so for the moment
       // I'll hide it.
       if (err !== 'ReplyError: ERR invalid DB index') {
@@ -33,7 +33,7 @@ export class RedisDatabase extends Database {
       }
     })
 
-    this.dataStructure = new HashRedisDataStructureStrategy(this.db)
+    this.dataStructure = new HashRedisDataStructureStrategy(this._db)
   }
 
   /**

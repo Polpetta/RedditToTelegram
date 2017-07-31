@@ -21,11 +21,11 @@ export class TelegramController extends EventEmitter {
     super()
 
     const self = this
-    this.model = new TelegramModel()
-    this.view = new TelegramView(this.model)
+    this._model = new TelegramModel()
+    this._view = new TelegramView(this._model)
 
     // Events
-    this.view.on('addedToANewGroup', function (id) {
+    this._view.on('addedToANewGroup', function (id) {
       self.emit('newSubscriber', id)
     })
   }
@@ -40,6 +40,6 @@ export class TelegramController extends EventEmitter {
       'Title: ' + message.title + '\n' +
       'Link: ' + message.url
 
-    this.model.sendMessage(id, toSend)
+    this._model.sendMessage(id, toSend)
   }
 }
