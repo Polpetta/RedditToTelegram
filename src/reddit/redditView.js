@@ -33,17 +33,4 @@ export class RedditView extends EventEmitter {
   getNewPosts () {
     return this.reddit.getNew(this.subredditName)
   }
-
-  /**
-   * Start the reddit polling with a given polling interval. At the end of the
-   * interval a event is emitted. The event name is 'newPosts'.
-   * The argument that the event send it's a promise with a list of posts.
-   */
-  startPolling () {
-    const self = this
-
-    setInterval(function () {
-      self.emit('newPosts', self.getNewPosts())
-    }, this.pollingInterval)
-  }
 }

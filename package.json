@@ -25,10 +25,7 @@
   "license": "GPL-3.0",
   "private": true,
   "dependencies": {
-    "hasha": "^2.2.0",
-    "nedb-core": "^3.0.6",
     "node-telegram-bot-api": "^0.25.0",
-    "redis": "^2.6.3",
     "snoowrap": "^1.11.3"
   },
   "devDependencies": {

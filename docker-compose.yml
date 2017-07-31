@@ -1,14 +1,7 @@
 version: '2'
 
 services:
-   database:
-     image: redis:alpine
-     restart: always
    bot:
-     depends_on:
-       - database
-     links:
-       - database
      build: ./
      env_file:
        - bot-variables.env
