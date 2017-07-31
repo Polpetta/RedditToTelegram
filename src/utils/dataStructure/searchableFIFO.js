@@ -19,8 +19,7 @@ export class SearchableFIFO {
     this._fifo.length = this._maxNumberOfItems
   }
 
-  push_head(id, data) {
-
+  pushHead (id, data) {
     const toPush = {
       id: id,
       content: data
