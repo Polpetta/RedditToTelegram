@@ -58,12 +58,15 @@ export class RedditController extends EventEmitter {
   _internalPolling (oldest) {
     let self = this
     this.view.getNewPosts().then(function (newPosts) {
-      for (let i = 0; i < newPosts.length; i++) {
+      let iterate = true
+      for (let i = 0; i < newPosts.length && iterate; i++) {
         if (newPosts[i].created > oldest.created) {
           self.emit(
             'incomingPost',
             RedditDataHandler.purgeUnusefulFields(newPosts[i])
           )
+        } else {
+          iterate = false
         }
       }
 
