@@ -26,7 +26,7 @@ describe('SearchableFIFO', function () {
     }
 
     for (let i = 0; i < 26; i++) {
-      fifo.push(i, randomData)
+      fifo.push_head(i, randomData)
     }
 
     // Checking

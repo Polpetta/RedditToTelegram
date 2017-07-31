@@ -15,16 +15,31 @@ export class SearchableFIFO {
       content: data
     }
 
+    this._fifo.push(toPush)
+    this._fifo.length = this._maxNumberOfItems
+  }
+
+  push_head(id, data) {
+
+    const toPush = {
+      id: id,
+      content: data
+    }
+
     this._fifo.unshift(toPush)
     this._fifo.length = this._maxNumberOfItems
   }
 
   get (id) {
     let data = this._fifo.find((element) => {
-      return id === element.id
+      if (element) {
+        return id === element.id
+      }
+
+      return false
     })
 
-    if (data != null) {
+    if (data) {
       return data.content
     } else {
       return null
