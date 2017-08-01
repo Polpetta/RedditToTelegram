@@ -20,20 +20,20 @@ export class EventHandler {
    */
   constructor () {
     const self = this
-    this.redditController = new RedditController(
+    this._redditController = new RedditController(
       generalConfig.getSubRedditName(),
       generalConfig.getPollingTime()
     )
-    this.telegramController = new TelegramController()
+    this._telegramController = new TelegramController()
 
-    this.subscribers = []
+    this._subscribers = []
 
     // Events
-    this.redditController.on('incomingPost', function (message) {
+    this._redditController.on('incomingPost', function (message) {
       self._handleIncomingMessage(message)
     })
 
-    this.telegramController.on('newSubscriber', function (id) {
+    this._telegramController.on('newSubscriber', function (id) {
       self._handleNewSubscriber(id)
     })
   }
@@ -48,7 +48,7 @@ export class EventHandler {
   _handleNewSubscriber (id) {
     if (generalConfig.isSubscribingAllowed() === true) {
       console.log('New Subscriber: ' + id)
-      this.subscribers.push(id)
+      this._subscribers.push(id)
     } else {
       console.log('The id: ' + id + ' added me in a group. Ignoring...')
     }
@@ -63,9 +63,9 @@ export class EventHandler {
   _handleIncomingMessage (message) {
     const self = this
 
-    this.subscribers.forEach(function (item) {
+    this._subscribers.forEach(function (item) {
       console.log('Pushing to id: ' + item)
-      self.telegramController.pushATextMessage(item, message)
+      self._telegramController.pushATextMessage(item, message)
     })
   }
 
@@ -73,6 +73,6 @@ export class EventHandler {
    * It allows the Reddit controller to poll data from Reddit.
    */
   run () {
-    this.redditController.getNewPosts()
+    this._redditController.getNewPosts()
   }
 }

@@ -22,11 +22,11 @@ export class RedditController extends EventEmitter {
    */
   constructor (subredditName, pollingTime) {
     super()
-    this.model = new RedditModel()
-    this.view = new RedditView(subredditName, pollingTime, this.model)
-    this.db = new SearchableFIFO(25)
+    this._model = new RedditModel()
+    this._view = new RedditView(subredditName, pollingTime, this._model)
+    this._db = new SearchableFIFO(25)
 
-    this.polling = false
+    this._polling = false
   }
 
   /**
@@ -35,12 +35,12 @@ export class RedditController extends EventEmitter {
    * indefinitely poll reddit searching for new posts.
    */
   getNewPosts () {
-    if (!this.polling) {
-      this.polling = true
+    if (!this._polling) {
+      this._polling = true
       let self = this
 
       // First population
-      this.view.getNewPosts().then(function (newPosts) {
+      this._view.getNewPosts().then(function (newPosts) {
         let newOldest = newPosts[0]
         self._internalPolling(newOldest)
       })
@@ -57,7 +57,7 @@ export class RedditController extends EventEmitter {
    */
   _internalPolling (oldest) {
     let self = this
-    this.view.getNewPosts().then(function (newPosts) {
+    this._view.getNewPosts().then(function (newPosts) {
       let iterate = true
       for (let i = 0; i < newPosts.length && iterate; i++) {
         if (newPosts[i].created > oldest.created) {

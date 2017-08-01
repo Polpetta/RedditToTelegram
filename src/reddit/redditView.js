@@ -20,10 +20,10 @@ export class RedditView extends EventEmitter {
    */
   constructor (subredditName, pollingInterval, redditModel) {
     super()
-    this.reddit = new Snoowrap(redditConfig.getConfig())
-    this.subredditName = subredditName
-    this.pollingInterval = pollingInterval
-    this.model = redditModel // Useful for triggering action from the model
+    this._reddit = new Snoowrap(redditConfig.getConfig())
+    this._subredditName = subredditName
+    this._pollingInterval = pollingInterval
+    this._model = redditModel // Useful for triggering action from the model
   }
 
   /**
@@ -31,6 +31,6 @@ export class RedditView extends EventEmitter {
    * @returns {Promise} - The promise with new posts data
    */
   getNewPosts () {
-    return this.reddit.getNew(this.subredditName)
+    return this._reddit.getNew(this._subredditName)
   }
 }

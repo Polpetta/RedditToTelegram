@@ -23,21 +23,21 @@ export class TelegramView extends EventEmitter {
     const config = telegramConfig.getConfig()
     const self = this
 
-    this.telegram = new TelegramBot(
+    this._telegram = new TelegramBot(
       config.token,
       {
         polling: true
       }
     )
 
-    this.telegram.on('new_chat_participant', function (message) {
+    this._telegram.on('new_chat_participant', function (message) {
       self._emitWhenInANewGroup(message)
     })
 
-    this.model = telegramModel
+    this._model = telegramModel
 
     // Events
-    this.model.on('sendTextMessage', function (id, message) {
+    this._model.on('sendTextMessage', function (id, message) {
       self.sendTextMessage(id, message)
     })
   }
@@ -48,7 +48,7 @@ export class TelegramView extends EventEmitter {
    * @param {string} textMessage - The message to send
    */
   sendTextMessage (id, textMessage) {
-    this.telegram.sendMessage(id, textMessage)
+    this._telegram.sendMessage(id, textMessage)
   }
 
   /**
@@ -61,7 +61,7 @@ export class TelegramView extends EventEmitter {
   _emitWhenInANewGroup (message) {
     const self = this
 
-    this.telegram.getMe().then(function (aboutMe) {
+    this._telegram.getMe().then(function (aboutMe) {
       if (aboutMe.id === message.new_chat_participant.id) {
         self.emit('addedToANewGroup', message.chat.id)
       }
