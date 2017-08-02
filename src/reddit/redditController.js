@@ -5,86 +5,72 @@
 import {RedditView} from './redditView'
 import {RedditModel} from './redditModel'
 import EventEmitter from 'events'
-import {RedisDatabaseFactory} from '../database/databaseFactory'
+import {SearchableFIFO} from '../utils/dataStructure/searchableFIFO'
 import {RedditDataHandler} from '../utils/redditDataHandler'
 
+/**
+ * Reddit controller. This class takes events from the view and purge all
+ * the already processed posts. If there is a new post, it will emit an event.
+ */
 export class RedditController extends EventEmitter {
 
+  /**
+   * The RedditController constructor.
+   * @param {string} subredditName - Subreddit name where fetch the posts
+   * @param {int} pollingTime - Interval in milliseconds between every fetch
+   * @constructor
+   */
   constructor (subredditName, pollingTime) {
     super()
-    // Reddit doesn't count UTC time in milliseconds
-    this.inizalization = Math.floor(Date.now() / 1000)
-    this.subredditName = subredditName
-    this.model = new RedditModel()
-    this.view = new RedditView(subredditName, pollingTime, this.model)
-    this.db = RedisDatabaseFactory.getDatabase()
+    this._model = new RedditModel()
+    this._view = new RedditView(subredditName, pollingTime, this._model)
+    this._db = new SearchableFIFO(25)
+
+    this._polling = false
   }
 
-  _checkNews (listOfNews) {
-    // FIXME: this code is a mess. It needs some clean up!
+  /**
+   * This method will fetch for the first time a list of posts and it will
+   * take the newest. After that it will call `_internalPolling` that will
+   * indefinitely poll reddit searching for new posts.
+   */
+  getNewPosts () {
+    if (!this._polling) {
+      this._polling = true
+      let self = this
 
-    const self = this
-    listOfNews.then(function (data) {
-      // FIXME: use a forEach statement to speed up the process
-      for (let i = 0; i < data.length; i++) {
-        /*
-         * Check if the post is already in the database, otherwise add it.
-         */
+      // First population
+      this._view.getNewPosts().then(function (newPosts) {
+        let newOldest = newPosts[0]
+        self._internalPolling(newOldest)
+      })
+    }
+  }
 
-        if (self.inizalization < data[i].created_utc) {
-          new Promise(
-            function (resolve, reject) {
-              self.db.isPresent(data[i].id, function (err, obj) {
-                if (err === null) {
-                  if (obj === 1) {
-                    resolve(true)
-                  }
-                  resolve(false)
-                }
-                reject(err)
-              })
-            })
-            .then(function (res) {
-              if (res === false) {
-                new Promise(
-                  function (resolve, reject) {
-                    self.db.pushData(data[i].id,
-                      {
-                        sent: false
-                      },
-                    function (err) {
-                      if (err == null) {
-                        // I Don't need to check the object, only if there
-                        // are errors
-                        resolve()
-                      }
-                      reject(err)
-                    })
-                  })
-                  .then(function () {
-                    self.emit(
-                      'incomingPost',
-                      RedditDataHandler.purgeUnusefulFields(data[i])
-                    )
-                  })
-                  .catch(function (err) {
-                    console.log('Error: ' + err)
-                  })
-              }
-            })
-            .catch(function (err) {
-              console.log('Error: ' + err)
-            })
+  /**
+   * The main goal of this method is to filter posts that are newer than
+   * the `oldest` param. If they are, a `incomingPost` event is emitted,
+   * alerting the telegram part that there is a new post to push to the user.
+   * @param {Object} oldest - The last reddit post fetched from the previous
+   * iteration
+   * @private
+   */
+  _internalPolling (oldest) {
+    let self = this
+    this._view.getNewPosts().then(function (newPosts) {
+      let iterate = true
+      for (let i = 0; i < newPosts.length && iterate; i++) {
+        if (newPosts[i].created > oldest.created) {
+          self.emit(
+            'incomingPost',
+            RedditDataHandler.purgeUnusefulFields(newPosts[i])
+          )
+        } else {
+          iterate = false
         }
       }
-    })
-  }
 
-  getNewPosts () {
-    const self = this
-    this.view.on('newPosts', function (listOfNews) {
-      self._checkNews(listOfNews)
+      self._internalPolling(newPosts[0])
     })
-    this.view.startPolling()
   }
 }

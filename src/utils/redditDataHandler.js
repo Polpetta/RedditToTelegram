@@ -2,7 +2,15 @@
  * Created by davide on 04/01/17.
  */
 
+/**
+ * This class normalize data coming from Reddit
+ */
 export class RedditDataHandler {
+  /**
+   * Return a new smaller object without all the fields, making it lighter.
+   * @param {Object} data - A raw Reddit post
+   * @returns {{domain: (*|string), id, title, selftext: *, isSelf: *, author: (*|exports.PACKAGE_SCHEMA.properties.author|{anyOf, optional}|exports.baseTags.author|{mustHaveValue, onTagged}|exports.DOCLET_SCHEMA.properties.author), created_utc: *, permalink: *, url}}
+   */
   static purgeUnusefulFields (data) {
     return {
       domain: data.domain,
