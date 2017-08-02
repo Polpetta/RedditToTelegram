@@ -25,6 +25,7 @@
   "license": "GPL-3.0",
   "private": true,
   "dependencies": {
+    "level": "^1.7.0",
     "node-telegram-bot-api": "^0.25.0",
     "snoowrap": "^1.11.3"
   },
