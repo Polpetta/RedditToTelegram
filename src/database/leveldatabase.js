@@ -14,18 +14,41 @@ export class LevelDatabase extends Database {
   }
 
   get (id) {
-    return null
+    let self = this
+    return new Promise((resolve, reject) => {
+      self._db.get(id, function (err, value) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(value)
+        }
+      })
+    })
   }
 
-  push (id) {
-    return null
-  }
-
-  isPresent (id) {
-    return false
+  put (id, data) {
+    let self = this
+    return new Promise((resolve, reject) => {
+      self._db.put(id, data, function (err) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
   }
 
   remove (id) {
-    return null
+    let self = this
+    return new Promise((resolve, reject) => {
+      self._db.del(id, function (err) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
   }
 }
