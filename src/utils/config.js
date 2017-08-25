@@ -70,39 +70,6 @@ class TelegramConfig extends Config {
 }
 
 /**
- * This class contains the parameters in order to connect to a Redis instance.
- */
-class RedisConfig extends Config {
-
-  /**
-   * The constructor take and save inside the object state the environment
-   * variables
-   */
-  constructor () {
-    super()
-    this._db = process.env.DBNAME || undefined
-    this._password = process.env.DBPASSWORD || undefined
-    this._host = process.env.DBHOST || undefined
-    this._port = process.env.DBPORT || undefined
-    this._url = process.env.DBURL || undefined
-  }
-
-  /**
-   * It return the configuration to connect to a Redis database
-   * @returns {{db: (*|undefined), password: (*|undefined), host: (*|undefined), port: (*|undefined), url: (*|undefined)}}
-   */
-  getConfig () {
-    return {
-      db: this._db,
-      password: this._password,
-      host: this._host,
-      port: this._port,
-      url: this._url
-    }
-  }
-}
-
-/**
  * This class contains general parameters
  */
 class GeneralConfig extends Config {
@@ -115,6 +82,7 @@ class GeneralConfig extends Config {
     super()
     this._pollingTime = process.env.POLLING_TIME || 5000
     this._subredditName = process.env.SUBREDDITNAME
+    this._dbPath = process.env.DB_PATH || './.data/subscriptions'
 
     this._allowSubscribers = false
     if (process.env.ALLOW_NEW_SUBSCRIBERS === '1') {
@@ -149,9 +117,16 @@ class GeneralConfig extends Config {
 
     return this._subredditName
   }
+
+  /**
+   * Return the path for the user database.
+   * @returns {*|string}
+   */
+  getDbPath () {
+    return this._dbPath
+  }
 }
 
 export const redditConfig = new RedditConfig()
 export const telegramConfig = new TelegramConfig()
-export const redisConfig = new RedisConfig()
 export const generalConfig = new GeneralConfig()
