@@ -5,7 +5,6 @@
 import {RedditView} from './redditView'
 import {RedditModel} from './redditModel'
 import EventEmitter from 'events'
-import {SearchableFIFO} from '../utils/dataStructure/searchableFIFO'
 import {RedditDataHandler} from '../utils/redditDataHandler'
 
 /**
@@ -24,7 +23,6 @@ export class RedditController extends EventEmitter {
     super()
     this._model = new RedditModel()
     this._view = new RedditView(subredditName, pollingTime, this._model)
-    this._db = new SearchableFIFO(25)
 
     this._polling = false
   }
