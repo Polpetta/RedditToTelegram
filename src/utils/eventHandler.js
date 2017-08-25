@@ -5,6 +5,7 @@
 import {RedditController} from '../reddit/redditController'
 import {TelegramController} from '../telegram/telegramController'
 import {generalConfig} from './config'
+import {LevelUserDatabase} from './../database/user/levelUserDatabase'
 
 /**
  * This class is the bridge that allows the Telgeram and Reddit MVCs to talk
@@ -26,7 +27,7 @@ export class EventHandler {
     )
     this._telegramController = new TelegramController()
 
-    this._subscribers = []
+    this._subscribers = new LevelUserDatabase(generalConfig.getDbPath())
 
     // Events
     this._redditController.on('incomingPost', function (message) {
@@ -35,6 +36,10 @@ export class EventHandler {
 
     this._telegramController.on('newSubscriber', function (id) {
       self._handleNewSubscriber(id)
+    })
+
+    this._telegramController.on('unsubscriber', function (id) {
+      self._handleUnsubscriber(id)
     })
   }
 
@@ -47,11 +52,31 @@ export class EventHandler {
    */
   _handleNewSubscriber (id) {
     if (generalConfig.isSubscribingAllowed() === true) {
-      console.log('New Subscriber: ' + id)
-      this._subscribers.push(id)
+      this._subscribers.subscribe(id)
+        .then(function () {
+          console.log('New Subscriber: ' + id)
+        })
+        .catch(function (err) {
+          console.log('Got this error signing the user: ' + err)
+        })
     } else {
       console.log('The id: ' + id + ' added me in a group. Ignoring...')
     }
+  }
+
+  /**
+   * Handle unsubscription from users
+   * @param {int} id - The id of the user/group
+   * @private
+   */
+  _handleUnsubscriber (id) {
+    this._subscribers.unsubscribe(id)
+      .then(function () {
+        console.log('User' + id + ' removed from user-list')
+      })
+      .catch(function (err) {
+        console.log('Failed to unsubscribe ' + id + '. Error reason: ' + err)
+      })
   }
 
   /**
@@ -63,10 +88,14 @@ export class EventHandler {
   _handleIncomingMessage (message) {
     const self = this
 
-    this._subscribers.forEach(function (item) {
-      console.log('Pushing to id: ' + item)
-      self._telegramController.pushATextMessage(item, message)
-    })
+    this._subscribers.getUserList()
+      .on('data', function (id) {
+        console.log('Pushing message to: ' + id)
+        self._telegramController.pushATextMessage(id, message)
+      })
+      .on('error', function (err) {
+        console.log('Got this error while reading user list: ' + err)
+      })
   }
 
   /**

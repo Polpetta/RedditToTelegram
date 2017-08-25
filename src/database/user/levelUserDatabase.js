@@ -1,4 +1,4 @@
-import {UserDatabase} from 'userDatabase'
+import {UserDatabase} from './userDatabase'
 import * as level from 'level'
 
 /**
@@ -9,13 +9,13 @@ export class LevelUserDatabase extends UserDatabase {
   constructor(path) {
 
     super()
-    this._db = level(path)
+    this._db = level.default(path)
   }
 
   subscribe (id) {
     let self = this
     return new Promise((resolve, reject) => {
-      self._db.put(id, data, function (err) {
+      self._db.put(id, function (err) {
         if (err) {
           reject(err)
         } else {
