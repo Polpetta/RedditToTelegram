@@ -72,7 +72,7 @@ export class EventHandler {
   _handleUnsubscriber (id) {
     this._subscribers.unsubscribe(id)
       .then(function () {
-        console.log('User' + id + ' removed from user-list')
+        console.log('User ' + id + ' removed from userlist')
       })
       .catch(function (err) {
         console.log('Failed to unsubscribe ' + id + '. Error reason: ' + err)

@@ -34,7 +34,7 @@ export class TelegramView extends EventEmitter {
       self._emitWhenInANewGroup(message)
     })
 
-    this._telegram.on('left_chat_member', function (message) {
+    this._telegram.on('left_chat_participant', function (message) {
       self._emitWhenKickedFromGroup(message)
     })
 
