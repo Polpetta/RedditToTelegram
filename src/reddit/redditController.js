@@ -6,6 +6,7 @@ import {RedditView} from './redditView'
 import {RedditModel} from './redditModel'
 import EventEmitter from 'events'
 import {RedditDataHandler} from '../utils/redditDataHandler'
+import {generalConfig} from '../utils/config'
 
 /**
  * Reddit controller. This class takes events from the view and purge all
@@ -55,20 +56,22 @@ export class RedditController extends EventEmitter {
    */
   _internalPolling (oldest) {
     let self = this
-    this._view.getNewPosts().then(function (newPosts) {
-      let iterate = true
-      for (let i = 0; i < newPosts.length && iterate; i++) {
-        if (newPosts[i].created > oldest.created) {
-          self.emit(
-            'incomingPost',
-            RedditDataHandler.purgeUnusefulFields(newPosts[i])
-          )
-        } else {
-          iterate = false
+    setTimeout(function () {
+      self._view.getNewPosts().then(function (newPosts) {
+        let iterate = true
+        for (let i = 0; i < newPosts.length && iterate; i++) {
+          if (newPosts[i].created > oldest.created) {
+            self.emit(
+              'incomingPost',
+              RedditDataHandler.purgeUnusefulFields(newPosts[i])
+            )
+          } else {
+            iterate = false
+          }
         }
-      }
 
-      self._internalPolling(newPosts[0])
-    })
+        self._internalPolling(newPosts[0])
+      })
+    }, generalConfig.getPollingTime())
   }
 }
