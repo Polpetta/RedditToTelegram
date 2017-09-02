@@ -9,6 +9,7 @@ COPY package-lock.json /usr/src/app
 
 WORKDIR /usr/src/app/
 RUN mkdir -p .data/subscriptions
+VOLUME .data/subscriptions
 
 RUN npm install --production
 
