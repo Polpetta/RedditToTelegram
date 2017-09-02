@@ -4,3 +4,15 @@ node_js:
 - "node"
 dist: trusty
 sudo: true
+addons:
+  apt:
+    packages:
+    - docker
+
+before_script:
+- sudo curl -o /usr/local/bin/docker-compose -L "https://github.com/docker/compose/releases/download/1.15.0/docker-compose-$(uname -s)-$(uname -m)"
+- sudo chmod +x /usr/local/bin/docker-compose
+script:
+- npm test
+- npm run build
+- touch bot-variables.env && docker-compose build
