@@ -6,8 +6,7 @@ import * as level from 'level'
  */
 export class LevelUserDatabase extends UserDatabase {
 
-  constructor(path) {
-
+  constructor (path) {
     super()
     this._db = level.default(path)
   }
