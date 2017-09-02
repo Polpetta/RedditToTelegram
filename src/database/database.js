@@ -14,17 +14,17 @@ export class Database {
    * @param {string} id - The id to save the data with
    * @param {Object} data - An object to store in the database
    */
-  pushData (id, data) {}
+  put (id, data) {}
 
   /**
    * Retrieve data from the database with a given id
    * @param {string} id - The data's unique id
    */
-  getData (id) {}
+  get (id) {}
 
   /**
-   * Checks if the data identified with the id are already present
-   * @param {string} id - The data's unique id
+   * Delete the data if present
+   * @param {string} id - The data to delete
    */
-  isPresent (id) {}
+  remove (id) {}
 }

@@ -1,13 +1,13 @@
-FROM node:alpine
+FROM node:8-slim
 
 MAINTAINER Davide Polonio <poloniodavide@gmail.com>
 
-COPY node_modules /usr/src/app/node_modules
 COPY dist /usr/src/app/dist
 COPY package.json /usr/src/app
 
 WORKDIR /usr/src/app/
+RUN mkdir -p .data/subscriptions
 
-RUN npm prune --production
+RUN npm install --production
 
 ENTRYPOINT ["npm", "start"]

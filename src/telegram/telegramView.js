@@ -34,6 +34,10 @@ export class TelegramView extends EventEmitter {
       self._emitWhenInANewGroup(message)
     })
 
+    this._telegram.on('left_chat_participant', function (message) {
+      self._emitWhenKickedFromGroup(message)
+    })
+
     this._model = telegramModel
 
     // Events
@@ -50,7 +54,6 @@ export class TelegramView extends EventEmitter {
   sendTextMessage (id, textMessage) {
     this._telegram.sendMessage(id, textMessage)
   }
-
   /**
    * This private method will check if the id o the new partecipant of a
    * group it's the bot itself. If this is true, a new event it's emitted.
@@ -64,6 +67,23 @@ export class TelegramView extends EventEmitter {
     this._telegram.getMe().then(function (aboutMe) {
       if (aboutMe.id === message.new_chat_participant.id) {
         self.emit('addedToANewGroup', message.chat.id)
+      }
+    })
+  }
+
+  /**
+   * This private method will check if the id kicked is the same of the bot.
+   * If it's the same, the bot will emit an event to its subscribers.
+   * @param {Object} message - An object coming from Telegram, with the leaving
+   * partecipant id
+   * @private
+   */
+  _emitWhenKickedFromGroup (message) {
+    const self = this
+
+    this._telegram.getMe().then(function (aboutMe) {
+      if (aboutMe.id === message.left_chat_member.id) {
+        self.emit('kickedFromGroup', message.chat.id)
       }
     })
   }

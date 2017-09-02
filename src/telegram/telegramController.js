@@ -28,6 +28,10 @@ export class TelegramController extends EventEmitter {
     this._view.on('addedToANewGroup', function (id) {
       self.emit('newSubscriber', id)
     })
+
+    this._view.on('kickedFromGroup', function (id) {
+      self.emit('unsubscriber', id)
+    })
   }
 
   /**
