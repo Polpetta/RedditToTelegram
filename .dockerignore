@@ -1,0 +1,4 @@
+cert/*
+doc/*
+node_modules/*
+.github/*
