@@ -12,16 +12,25 @@ export class RedditDataHandler {
    * @returns {{domain: (*|string), id, title, selftext: *, isSelf: *, author: (*|exports.PACKAGE_SCHEMA.properties.author|{anyOf, optional}|exports.baseTags.author|{mustHaveValue, onTagged}|exports.DOCLET_SCHEMA.properties.author), created_utc: *, permalink: *, url}}
    */
   static purgeUnusefulFields (data) {
+    let tweetSelf = ''
+
+    if (data.selftext.length > 140) {
+      tweetSelf = data.selftext.substring(0, 140) + '...'
+    }
+
     return {
+      subreddit: data.subreddit,
       domain: data.domain,
       id: data.id,
       title: data.title,
       selftext: data.selftext,
       isSelf: data.is_self,
-      author: data.author,
+      author: data.author.name,
       created_utc: data.create_utc,
       permalink: data.permalink,
-      url: data.url
+      url: data.url,
+      nsfw: data.over_18,
+      tweetSelf: tweetSelf
     }
   }
 }
