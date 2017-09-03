@@ -40,7 +40,9 @@ class RedditConfig extends Config {
       clientId: this._clientId,
       clientSecret: this._clientSecret,
       username: this._username,
-      password: this._password
+      password: this._password,
+      requestDelay: 1000,
+      continueAfterRatelimitError: true
     }
   }
 }
