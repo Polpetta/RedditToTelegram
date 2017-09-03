@@ -5,3 +5,9 @@ services:
      build: ./
      env_file:
        - bot-variables.env
+     volumes:
+       - subscriptions:/usr/src/app/.data/subscriptions
+     restart: always
+
+volumes:
+    subscriptions:
