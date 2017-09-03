@@ -58,7 +58,9 @@ bot can broadcast new posts to anyone who add it into a group or not
 Set this <strong>only</strong> if you're going to put the bot in a production
  mode.
 <li>POLLING_TIME: it's an optional variable that defines how much RTT should
-poll Reddit APIs. Default is every 5 seconds. 
+poll Reddit APIs. Default is every 5 seconds. Pay attention that an 
+additional second is added to avoid Reddit APIs limitations. Requests that go 
+over Reddit APIs limits are queued and processed when possible.
 </ul>
 Finally, if you have Docker and docker-compose installed on your system, just
 run: <br>
@@ -70,7 +72,7 @@ If you're not using Docker, you need to set the variables in your terminal
 (with <code>export</code> keyword) and then run:
 <br>
 <code>
-npm start
+npm run build && npm start
 </code>
 <br>
 Enjoy! :)
