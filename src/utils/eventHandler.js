@@ -91,7 +91,7 @@ export class EventHandler {
     this._subscribers.getUserList()
       .on('data', function (id) {
         console.log('Pushing message to: ' + id)
-        self._telegramController.pushATextMessage(id, message)
+        self._telegramController.pushNewPost(id, message)
       })
       .on('error', function (err) {
         console.log('Got this error while reading user list: ' + err)
