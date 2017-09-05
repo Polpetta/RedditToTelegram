@@ -41,8 +41,8 @@ export class TelegramView extends EventEmitter {
     this._model = telegramModel
 
     // Events
-    this._model.on('sendTextMessage', function (id, message) {
-      self.sendTextMessage(id, message)
+    this._model.on('sendTextMessage', function (id, message, options) {
+      self.sendTextMessage(id, message, options)
     })
   }
 
@@ -50,9 +50,10 @@ export class TelegramView extends EventEmitter {
    * Send a message to the given id
    * @param {int} id - The address where to send the message
    * @param {string} textMessage - The message to send
+   * @param {Object} options - An object containing sending options
    */
-  sendTextMessage (id, textMessage) {
-    this._telegram.sendMessage(id, textMessage)
+  sendTextMessage (id, textMessage, options) {
+    this._telegram.sendMessage(id, textMessage, options)
   }
   /**
    * This private method will check if the id o the new partecipant of a
