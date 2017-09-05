@@ -5,6 +5,7 @@
 import {TelegramView} from './telegramView'
 import {TelegramModel} from './telegramModel'
 import EventEmitter from 'events'
+import * as emoji from 'node-emoji'
 
 /**
  * The controller for the telegram MVC. It subscribe to the view and act
@@ -51,25 +52,38 @@ export class TelegramController extends EventEmitter {
    */
   pushNewPost (id, message) {
     let linkToAuthor = 'https://www.reddit.com/user/' + message.author
-    let nsfw = 'No'
+    let nsfw = ''
     if (message.nsfw) {
-      nsfw = 'Yes'
+      nsfw = emoji.emojify(
+        ':warning: This post is NSFW! :underage: \n',
+        null,
+        null)
     }
 
-    let toSend = '*' + message.title + '* \n'
+    let toSend = emoji.get(':speech_balloon:') + ' *' + message.title + '* \n'
 
     if (!message.nsfw) {
       if (message.isSelf) {
-        let text = message.tweetSelf || 'there\'s no text!'
-        toSend += '_Content_: ' + text + '\n\n'
+        let content = message.selftext.length > 0
+          ? emoji.emojify(':pencil: ', null, null) : ''
+        let text = message.tweetSelf || message.selftext
+
+        toSend += content + text + '\n\n'
       } else {
-        toSend += '[Link](' + message.url + ') \n\n'
+        toSend += emoji.get(':link:') + ' [Link](' + message.url + ') \n\n'
       }
+    } else {
+      toSend += '\n\n'
     }
     toSend +=
-      '[Go to the post](https://www.reddit.com' + message.permalink + ')\n' +
-      '_Author_: [/u/' + message.author + '](' + linkToAuthor + ')\n' +
-      '_NSFW_: ' + nsfw + '\n'
+      emoji.get(':rocket:') + ' [Go to the post](https://www.reddit.com' +
+      message.permalink + ')\n' + emoji.get(':bust_in_silhouette:') +
+      ' [/u/' + message.author + '](' + linkToAuthor + ')\n' +
+      nsfw + '\n\n' + 'Three random emojis for you: '
+
+    for (let i = 0; i < 3; i++) {
+      toSend += emoji.random().emoji + ' '
+    }
 
     this._model.sendMessage(id, toSend, {parse_mode: 'Markdown'})
   }
