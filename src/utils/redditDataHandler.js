@@ -14,8 +14,8 @@ export class RedditDataHandler {
   static purgeUnusefulFields (data) {
     let tweetSelf = ''
 
-    if (data.selftext.length > 140) {
-      tweetSelf = data.selftext.substring(0, 140) + '...'
+    if (data.selftext.length > 3500) {
+      tweetSelf = data.selftext.substring(0, 3500) + '\n...'
     }
 
     return {
