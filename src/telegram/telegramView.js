@@ -38,9 +38,9 @@ export class TelegramView extends EventEmitter {
       self._emitWhenKickedFromGroup(message)
     })
 
-    this._telegram.on('polling_error', function(error) {
+    this._telegram.on('polling_error', function () {
       console.error('[error] Error fetching data from Telegram')
-    });
+    })
 
     this._model = telegramModel
 
