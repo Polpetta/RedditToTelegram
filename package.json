@@ -28,7 +28,8 @@
     "level": "^1.7.0",
     "node-emoji": "^1.8.1",
     "node-telegram-bot-api": "^0.25.0",
-    "snoowrap": "^1.14.2"
+    "snoowrap": "^1.14.2",
+    "winston": "^2.3.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
