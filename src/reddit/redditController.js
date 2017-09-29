@@ -57,18 +57,26 @@ export class RedditController extends EventEmitter {
   _internalPolling (oldest) {
     let self = this
     setTimeout(function () {
-      try {
-        self._view.getNewPosts().then(function (newPosts) {
+      self._view.getNewPosts()
+        .then(function (newPosts) {
           self._emitNewPosts(oldest, newPosts)
           self._internalPolling(newPosts[0])
         })
-      } catch (err) {
-        console.error('Error fetching data from Reddit.\n' +
-          '  Last post fetched: ' + oldest + '\n' +
-          '  Error message:\n' + err)
+        .catch(function () {
+          let m = new Date()
+          let dateString =
+            m.getUTCFullYear() + '/' +
+            ('0' + (m.getUTCMonth() + 1)).slice(-2) + '/' +
+            ('0' + m.getUTCDate()).slice(-2) + ' ' +
+            ('0' + m.getUTCHours()).slice(-2) + ':' +
+            ('0' + m.getUTCMinutes()).slice(-2) + ':' +
+            ('0' + m.getUTCSeconds()).slice(-2)
 
-        self._internalPolling(oldest)
-      }
+          console.error('[error][' + dateString + '] Fetching data from' +
+            ' Reddit. Last post fetched: ' + oldest.id)
+
+          self._internalPolling(oldest)
+        })
     }, generalConfig.getPollingTime())
   }
 
