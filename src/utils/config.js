@@ -42,7 +42,8 @@ class RedditConfig extends Config {
       username: this._username,
       password: this._password,
       requestDelay: 1000,
-      continueAfterRatelimitError: true
+      continueAfterRatelimitError: true,
+      maxRetryAttempts: 5
     }
   }
 }
