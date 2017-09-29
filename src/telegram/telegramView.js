@@ -39,7 +39,7 @@ export class TelegramView extends EventEmitter {
     })
 
     this._telegram.on('polling_error', function(error) {
-      console.error("[error] Error fetching data from Telegram")
+      console.error('[error] Error fetching data from Telegram')
     });
 
     this._model = telegramModel
