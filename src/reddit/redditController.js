@@ -72,7 +72,7 @@ export class RedditController extends EventEmitter {
             ('0' + m.getUTCMinutes()).slice(-2) + ':' +
             ('0' + m.getUTCSeconds()).slice(-2)
 
-          console.error('[Error][' + dateString + '] Fetching data from' +
+          console.error('[error][' + dateString + '] Fetching data from' +
             ' Reddit. Last post fetched: ' + oldest.id)
 
           self._internalPolling(oldest)
