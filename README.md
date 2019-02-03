@@ -68,13 +68,6 @@ run: <br>
 npm run build && docker-compose up
 </code>
 <br>
-If you're not using Docker, you need to set the variables in your terminal 
-(with <code>export</code> keyword) and then run:
-<br>
-<code>
-npm run build && npm start
-</code>
-<br>
 Enjoy! :)
 
 <h3>Contributing</h3>
