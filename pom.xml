@@ -44,7 +44,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.12</junit.version>
         <jraw.version>1.1.0</jraw.version>
-        <telegrambots.version>4.1.2</telegrambots.version>
+        <telegramapi.version>4.1.1</telegramapi.version>
+        <akka.version>2.5.20</akka.version>
     </properties>
 
     <repositories>
@@ -127,14 +128,25 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-testkit_2.12</artifactId>
+            <version>${akka.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>net.dean.jraw</groupId>
             <artifactId>JRAW</artifactId>
             <version>${jraw.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.rubenlagus.TelegramBots</groupId>
-            <artifactId>Bots</artifactId>
-            <version>${telegrambots.version}</version>
+            <groupId>com.github.pengrad</groupId>
+            <artifactId>java-telegram-bot-api</artifactId>
+            <version>${telegramapi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-actor_2.12</artifactId>
+            <version>${akka.version}</version>
         </dependency>
     </dependencies>
 </project>
