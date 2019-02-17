@@ -1,8 +1,8 @@
-package net.polpetta.rtt.reddit;
+package net.polpetta.rtt.connectors.reddit;
 
-import akka.actor.AbstractActor;
-import akka.actor.ActorRef;
+import akka.actor.AbstractLoggingActor;
 import akka.actor.Props;
+import net.dean.jraw.RedditClient;
 
 /**
  * Actor that has the task to check - for a given subreddit - if there are new posts. If new posts are detected, the
@@ -10,16 +10,16 @@ import akka.actor.Props;
  *
  * @see Subreddit
  */
-public class SubmissionDiscover extends AbstractActor {
+public class SubmissionDiscover extends AbstractLoggingActor {
 
-    private final ActorRef postProcessor;
+    private final RedditClient client;
 
-    static public Props props(String message, ActorRef postProcessor) {
-        return Props.create(SubmissionDiscover.class, () -> new SubmissionDiscover(postProcessor));
+    static public Props props(RedditClient client) {
+        return Props.create(SubmissionDiscover.class, () -> new SubmissionDiscover(client));
     }
 
-    public SubmissionDiscover(ActorRef postProcessor) {
-        this.postProcessor = postProcessor;
+    public SubmissionDiscover(RedditClient client) {
+        this.client = client;
     }
 
     @Override

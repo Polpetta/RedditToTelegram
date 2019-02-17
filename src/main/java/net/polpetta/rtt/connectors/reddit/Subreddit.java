@@ -1,4 +1,4 @@
-package net.polpetta.rtt.reddit;
+package net.polpetta.rtt.connectors.reddit;
 
 /**
  * This POJO class contains the information regarding a subreddit, and holds the last seen post id.
@@ -19,9 +19,5 @@ public class Subreddit {
 
     public String getLastPostSeenId() {
         return lastPostSeenId;
-    }
-
-    public void setLastPostSeenId(String lastPostSeenId) {
-        this.lastPostSeenId = lastPostSeenId;
     }
 }
