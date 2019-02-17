@@ -3,5 +3,6 @@ jdk:
 - oraclejdk8
 - openjdk8
 sudo: false
+install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true --batch-mode --show-version --settings .travis.settings.xml
 script:
   - mvn javadoc:javadoc

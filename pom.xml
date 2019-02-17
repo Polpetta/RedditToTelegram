@@ -57,6 +57,9 @@
             <id>central</id>
             <name>bintray</name>
             <url>https://jcenter.bintray.com</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
