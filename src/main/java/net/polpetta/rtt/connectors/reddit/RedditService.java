@@ -28,13 +28,13 @@ public class RedditService extends AbstractLoggingActor {
                 String password,
                 String clientId,
                 String clientSecret,
-                String useraAgent
+                String userAgent
         ) {
             this.username = username;
             this.password = password;
             this.clientId = clientId;
             this.clientSecret = clientSecret;
-            this.userAgent = useraAgent;
+            this.userAgent = userAgent;
         }
 
         String getUsername() {
