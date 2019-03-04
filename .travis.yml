@@ -5,4 +5,5 @@ jdk:
 sudo: false
 install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true --batch-mode --show-version --settings .travis.settings.xml
 script:
+  - mvn test
   - mvn javadoc:javadoc
