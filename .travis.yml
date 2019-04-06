@@ -10,4 +10,4 @@ install: mvn dependency:resolve --batch-mode --show-version --settings .travis.s
 script:
   - mvn test
   - mvn javadoc:javadoc
-  - mvn package
+  - mvn package -DskipTests=true -Dmaven.javadoc.skip=true
