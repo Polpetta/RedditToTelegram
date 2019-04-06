@@ -10,8 +10,11 @@ services:
       restart: always
 env:
   - DB_TEST_ADDRESS=mysql
+  - MAVEN_CONFIG=/var/maven/.m2
+  - MAVEN_OPTS=-Duser.home=/var/maven
 
-user: 1000:1000
+volumes:
+  - /tmp/.m2:/var/maven/.m2
 
 before: mvn dependency:resolve -q
 
