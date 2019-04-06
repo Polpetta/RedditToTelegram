@@ -1,4 +1,6 @@
-from: maven:3-alpine
+dockerfile: ./Dockerfile.dev
+tags:
+  - rtt/devel:latest
 services:
   - mysql:
       from: mysql:5.7
@@ -10,13 +12,12 @@ services:
       restart: always
 env:
   - DB_TEST_ADDRESS=mysql
-  - MAVEN_CONFIG=/var/maven/.m2
-  - MAVEN_OPTS=-Duser.home=/var/maven
+  - MAVEN_CONFIG=/tmp/maven/.m2
+  - MAVEN_OPTS=-Duser.home=/tmp/maven
 
-volumes:
-  - /tmp/.m2:/var/maven/.m2
+before: mkdir -p /tmp/maven/.m2 && mvn dependency:resolve -q
 
-before: mvn dependency:resolve -q
+user: 1000:1000
 
 tasks:
   env: env | sort

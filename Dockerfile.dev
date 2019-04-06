@@ -1,0 +1,15 @@
+FROM maven:3
+
+LABEL maintainer="Davide Polonio <poloniodavide@gmail.com>"
+LABEL version=0.1.0
+LABEL description="Development docker image for Reddit To Telegram"
+
+RUN apt-get update && \
+    # Installing a standard set of utilities that can be useful when debugging inside the container
+    apt-get install -y sudo passwd mysql-client curl wget nano && \
+    rm -rf /var/lib/apt/lists/* && \
+    useradd -m -G sudo -s /bin/bash rtt && \
+    echo %rtt ALL=NOPASSWD:ALL > /etc/sudoers.d/rtt && \
+    chmod 0440 /etc/sudoers.d/rtt
+
+USER rtt
