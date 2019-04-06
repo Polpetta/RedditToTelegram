@@ -1,9 +1,13 @@
 language: java
 jdk:
-- oraclejdk8
-- openjdk8
+  - oraclejdk11
+  - openjdk11
+  - openjdk10
+  - oraclejdk8
+  - openjdk8
 sudo: false
-install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true --batch-mode --show-version --settings .travis.settings.xml
+install: mvn dependency:resolve --batch-mode --show-version --settings .travis.settings.xml
 script:
   - mvn test
   - mvn javadoc:javadoc
+  - mvn package
