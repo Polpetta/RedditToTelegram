@@ -16,7 +16,7 @@ env:
 
 user: 1000:1000
 
-before: mvn install -DskipTests=true -Dmaven.javadoc.skip=true
+before: mvn dependency:resolve -q
 
 tasks:
   env: env | sort
