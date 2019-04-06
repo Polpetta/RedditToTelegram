@@ -46,6 +46,7 @@
         <jraw.version>1.1.0</jraw.version>
         <telegramapi.version>4.1.1</telegramapi.version>
         <akka.version>2.5.20</akka.version>
+        <slick.version>3.3.0</slick.version>
     </properties>
 
     <repositories>
@@ -150,6 +151,16 @@
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-actor_2.12</artifactId>
             <version>${akka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.slick</groupId>
+            <artifactId>slick_2.12</artifactId>
+            <version>${slick.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.slick</groupId>
+            <artifactId>slick-hikaricp_2.12</artifactId>
+            <version>${slick.version}</version>
         </dependency>
     </dependencies>
 </project>
