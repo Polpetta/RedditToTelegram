@@ -7,12 +7,9 @@ services:
         - MYSQL_DATABASE=rtt
         - MYSQL_USER=rtt
         - MYSQL_PASSWORD=rtt
-      expose:
-        - 3306:3306
-        - 33060:33060
       restart: always
 env:
-  - DB_TEST_ADDRESS=localhost
+  - DB_TEST_ADDRESS=mysql
 
 user: 1000:1000
 
@@ -22,8 +19,9 @@ tasks:
   env: env | sort
   test: mvn test
   shell: /bin/bash
+  doc:
+    disable: '*'
+    cmd: mvn javadoc:javadoc
   jar:
-    disable:
-      - mysql
-    cmd:
-      - mvn package -DskipTests=true -Dmaven.javadoc.skip=true
+    disable: '*'
+    cmd: mvn package -DskipTests=true -Dmaven.javadoc.skip=true
