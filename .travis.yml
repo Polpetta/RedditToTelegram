@@ -1,13 +1,11 @@
-language: java
-jdk:
-  - oraclejdk11
-  - openjdk11
-  - openjdk10
-  - oraclejdk8
-  - openjdk8
+language: node_js
+node_js:
+  - node
+services: docker
 sudo: false
-install: mvn dependency:resolve --batch-mode --show-version --settings .travis.settings.xml
+
+before_install: npm install -g binci
 script:
-  - mvn test
-  - mvn javadoc:javadoc
-  - mvn package -DskipTests=true -Dmaven.javadoc.skip=true
+  - binci test
+  - binci doc
+  - binci jar
