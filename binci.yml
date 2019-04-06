@@ -1,0 +1,29 @@
+from: maven:3-alpine
+services:
+  - mysql:
+      from: mysql:5.7
+      env:
+        - MYSQL_ROOT_PASSWORD=rtt
+        - MYSQL_DATABASE=rtt
+        - MYSQL_USER=rtt
+        - MYSQL_PASSWORD=rtt
+      expose:
+        - 3306:3306
+        - 33060:33060
+      restart: always
+env:
+  - DB_TEST_ADDRESS=localhost
+
+user: 1000:1000
+
+before: mvn install -DskipTests=true -Dmaven.javadoc.skip=true
+
+tasks:
+  env: env | sort
+  test: mvn test
+  shell: /bin/bash
+  jar:
+    disable:
+      - mysql
+    cmd:
+      - mvn package -DskipTests=true -Dmaven.javadoc.skip=true
