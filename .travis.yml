@@ -4,7 +4,12 @@ node_js:
 services: docker
 sudo: false
 
-before_install: cd ../ && mv RedditToTelegram rtt/ && cd rtt/ && npm install -g binci
+before_install: |
+  cd ../ &&
+  mv RedditToTelegram/ rtt/ &&
+  cd rtt/ &&
+  npm install -g binci &&
+  sed -i 's/rtt:rtt/root:root/g' binci.yml
 script:
   - binci test
   - binci doc
