@@ -6,7 +6,14 @@ LABEL description="Development docker image for Reddit To Telegram"
 
 RUN apt-get update && \
     # Installing a standard set of utilities that can be useful when debugging inside the container
-    apt-get install -y sudo passwd mysql-client curl wget nano && \
+    apt-get install -y \
+    sudo \
+    passwd \
+    mysql-client \
+    curl \
+    wget \
+    less \
+    nano && \
     rm -rf /var/lib/apt/lists/* && \
     useradd -m -G sudo -s /bin/bash rtt && \
     echo %rtt ALL=NOPASSWD:ALL > /etc/sudoers.d/rtt && \
