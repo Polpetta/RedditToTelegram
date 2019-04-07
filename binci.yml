@@ -21,11 +21,11 @@ user: rtt:rtt
 
 tasks:
   env: env | sort
-  test: mvn test
+  test: mvn test -B | grep --color=never -v 'Download*'
   shell: /bin/bash
   doc:
     disable: '*'
-    cmd: mvn javadoc:javadoc
+    cmd: mvn javadoc:javadoc -B | grep --color=never -v 'Download*'
   jar:
     disable: '*'
-    cmd: mvn package -DskipTests=true -Dmaven.javadoc.skip=true
+    cmd: mvn package -DskipTests=true -Dmaven.javadoc.skip=true -B | grep --color=never -v 'Download*'
