@@ -17,7 +17,7 @@ env:
 
 before: mkdir -p /tmp/maven/.m2 && mvn dependency:resolve -q
 
-user: 1000:1000
+user: rtt:rtt
 
 tasks:
   env: env | sort
